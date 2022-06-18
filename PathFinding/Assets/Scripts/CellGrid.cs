@@ -4,19 +4,6 @@ using UnityEngine;
 
 public class CellGrid : MonoBehaviour
 {
-<<<<<<< HEAD
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-=======
     [SerializeField] private Color _colorBase, _colorWall, _colorInPath, _colorThePath;
     
     [SerializeField] private SpriteRenderer _renderer;
@@ -53,5 +40,4 @@ public class CellGrid : MonoBehaviour
         this.isInPath   = isInPath;
         this.isThePath  = isThePath;
     }
->>>>>>> 15d67ae2 (GridGenerator)
 }

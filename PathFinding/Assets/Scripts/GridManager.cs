@@ -15,7 +15,7 @@ public class GridManager : MonoBehaviour
     }
     
     private void Update() {
-        GameObject cell = GameObject. 
+  
     }
     private void Generator(){
         for(int x = 0; x < _width; x++) {
