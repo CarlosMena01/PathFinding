@@ -10,6 +10,8 @@ public class CellGrid : MonoBehaviour
 
     [SerializeField] private bool isWall, isInPath, isThePath;
 
+    [SerializeField] private int x,y;
+
     public void Update() {
         if(isWall) {
             _renderer.color = _colorWall;
@@ -39,5 +41,14 @@ public class CellGrid : MonoBehaviour
         this.isWall     = isWall;
         this.isInPath   = isInPath;
         this.isThePath  = isThePath;
+    }
+
+    public void Position(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public Vector3 getPosition(){
+        return new Vector3(this.x, this.y);
     }
 }
