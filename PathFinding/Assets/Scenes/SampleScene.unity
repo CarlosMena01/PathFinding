@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce3e5e9a1b03dddaab386edf7aa9426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _colorBase: {r: 0.80324596, g: 1, b: 0.495283, a: 1}
+  _colorBase: {r: 1, g: 1, b: 1, a: 1}
   _colorWall: {r: 0.06926012, g: 1, b: 0, a: 1}
   _colorInPath: {r: 0, g: 0, b: 0, a: 0}
   _colorThePath: {r: 0, g: 0, b: 0, a: 0}
@@ -148,6 +148,8 @@ MonoBehaviour:
   isWall: 0
   isInPath: 0
   isThePath: 0
+  x: 0
+  y: 0
 --- !u!212 &359865306 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 4711233377358097913, guid: 56185870261af35e18f7a414ae3ddc87, type: 3}

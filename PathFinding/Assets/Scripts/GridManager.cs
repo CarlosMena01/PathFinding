@@ -14,7 +14,7 @@ public class GridManager : MonoBehaviour
 
     private void Start() {
         Generator();
-
+        Debug.Log("Empezamos");
         MazeDFS("Cell_8_8");
     }
     
@@ -45,29 +45,76 @@ public class GridManager : MonoBehaviour
     }
 
     private void MazeDFS(string startCell){
-        List<CellGrid> neighborhoodCells = NeighborhoodDFS(startCell);
+        List<string>    neighborhoodCells   = NeighborhoodDFS(startCell);
+        List<string>    visited             = new List<string>();
+        
 
-        for(int i = 0; i < neighborhoodCells.Count; i++) {
-            neighborhoodCells[i].State(true,false,false);
+        CellGrid currentCell =  cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]];
+        CellGrid newCell;
+        visited.Add(currentCell.name);
+
+        int count = 0;
+
+        while (currentCell.name != startCell)
+        {
+            neighborhoodCells   = NeighborhoodDFS(currentCell.name); //Actualizamos los nuevos vecinos
+            newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
+            
+            if(visited.Contains(newCell.name)){
+                //Si la celta ya había sido vistada, se cera un muro
+                if((newCell.getPosition() - currentCell.getPosition()).x > 0) {
+                    string name = $"Cell_{newCell.getPosition().x - 1}_{newCell.getPosition().y}";  
+                    if(cellDict.ContainsKey(name)){
+                        cellDict[name].State(true,false,false);
+                    }
+                    
+                } else if((newCell.getPosition() - currentCell.getPosition()).x < 0) {
+                    string name = $"Cell_{newCell.getPosition().x + 1}_{newCell.getPosition().y}";  
+                    if(cellDict.ContainsKey(name)){
+                        cellDict[name].State(true,false,false);
+                    }
+                    
+                } else if((newCell.getPosition() - currentCell.getPosition()).y < 0) {
+                    string name = $"Cell_{newCell.getPosition().x}_{newCell.getPosition().y + 1}";  
+                    if(cellDict.ContainsKey(name)){
+                        cellDict[name].State(true,false,false);
+                    }
+                    
+                } else if((newCell.getPosition() - currentCell.getPosition()).y > 0) {
+                    string name = $"Cell_{newCell.getPosition().x}_{newCell.getPosition().y - 1}";  
+                    if(cellDict.ContainsKey(name)){
+                        cellDict[name].State(true,false,false);
+                    }
+                    
+                }
+            } else {
+                currentCell = newCell;
+                visited.Add(currentCell.name);
+            }
+
+            if(count >= _width * _height){
+                break;
+            }
+            count++;
         }
 
     }
 
-    private List<CellGrid> NeighborhoodDFS(string currentCell){
-        List<CellGrid> result = new List<CellGrid>();
+    private List<string> NeighborhoodDFS(string currentCell){
+        List<string> result = new List<string>();
         Vector3 positionCell  = cellDict[currentCell].getPosition();
 
         if(cellDict.ContainsKey($"Cell_{positionCell.x}_{positionCell.y + 2}")) {
-            result.Add(cellDict[$"Cell_{positionCell.x}_{positionCell.y + 2}"]);
+            result.Add($"Cell_{positionCell.x}_{positionCell.y + 2}");
         }
         if(cellDict.ContainsKey($"Cell_{positionCell.x + 2}_{positionCell.y}")) {
-            result.Add(cellDict[$"Cell_{positionCell.x + 2}_{positionCell.y}"]);
+            result.Add($"Cell_{positionCell.x + 2}_{positionCell.y}");
         }
         if(cellDict.ContainsKey($"Cell_{positionCell.x}_{positionCell.y - 2}")) {
-            result.Add(cellDict[$"Cell_{positionCell.x}_{positionCell.y - 2}"]);
+            result.Add($"Cell_{positionCell.x}_{positionCell.y - 2}");
         }
         if(cellDict.ContainsKey($"Cell_{positionCell.x - 2}_{positionCell.y}")) {
-            result.Add(cellDict[$"Cell_{positionCell.x - 2}_{positionCell.y}"]);
+            result.Add($"Cell_{positionCell.x - 2}_{positionCell.y}");
         }
         return result;
     }
