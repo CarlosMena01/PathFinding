@@ -70,21 +70,25 @@ public class GridManager : MonoBehaviour
         currentCell = cellDict[startCell];
 
         int count = 0;
+        
         while (true)
         {
         timer += Time.deltaTime;
         if (timer >= 2)
         {
-            //Debug.Log(currentCell.name);
+            Debug.Log($"Current: {currentCell.name}");
             neighborhoodCells = NeighborhoodDFS(currentCell.name); // Actualizamos el vecindario
             
             //Eliminamos las celdas visitadas
-            for(int i = 0; i < neighborhoodCells.Count; i++) {
-                if(visited.Contains(neighborhoodCells[i])) {
-                    neighborhoodCells.Remove(neighborhoodCells[i]);
-                }                    
+            for(int i = 0; i < visited.Count; i++) {
+                
+                if(neighborhoodCells.Contains(visited[i])) {
+                    //Debug.Log($"Removed: {neighborhoodCells[i]}");
+                    neighborhoodCells.Remove(visited[i]);
+                    
+                }
             }
-
+            
             if(neighborhoodCells.Count > 0) {
                 
                 newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
@@ -100,9 +104,9 @@ public class GridManager : MonoBehaviour
                 visited.Add(newCell.name);
                 stack.Add(newCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
-                Debug.Log($"Stack: {stack[stack.Count -1]}");
                 
             } else{
+                Debug.Log($"No vecinos");
                 visited.Add(currentCell.name);
                 currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
