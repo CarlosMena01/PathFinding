@@ -15,7 +15,7 @@ public class GridManager : MonoBehaviour
     private void Start() {
         Generator();
 
-        MazeDFS("Cell_2_2");
+        MazeDFS("Cell_0_0");
     }
     
     private void Generator(){
@@ -49,7 +49,7 @@ public class GridManager : MonoBehaviour
         List<string>    visited             = new List<string>();
         List<string>    stack               = new List<string>();
 
-        CellGrid currentCell = cellDict[startCell];
+        CellGrid currentCell;
         CellGrid newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
 
         visited.Add(startCell);
@@ -64,6 +64,8 @@ public class GridManager : MonoBehaviour
                 currentCell.State(isWall, false, false);
             }   
         }
+        
+        currentCell = cellDict[startCell];
 
         int count = 0;
 
@@ -78,50 +80,33 @@ public class GridManager : MonoBehaviour
                     neighborhoodCells.Remove(neighborhoodCells[i]);
                 }                    
             }
+            //Debug.Log($"Neighborhood :{neighborhoodCells.Count}");
 
-            if(neighborhoodCells.Count >= 0) {
+            if(neighborhoodCells.Count > 0) {
+                
                 newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
                 //Si no ha sido visitada, creamos un puente entre ellas
-                if((newCell.getPosition() - currentCell.getPosition()).x > 0) {
-                    //La nueva celda está a la derecha
-                    string name = $"Cell_{newCell.getPosition().x - 1}_{newCell.getPosition().y}";  
-                    if(cellDict.ContainsKey(name)){
-                        cellDict[name].State(false,false,false);
-                    }
-                    
-                } else if((newCell.getPosition() - currentCell.getPosition()).x < 0) {
-                    //La nueva celda está a la izquierda
-                    string name = $"Cell_{newCell.getPosition().x + 1}_{newCell.getPosition().y}";  
-                    if(cellDict.ContainsKey(name)){
-                        cellDict[name].State(false,false,false);
-                    }
-                    
-                } else if((newCell.getPosition() - currentCell.getPosition()).y < 0) {
-                    //La nueva celda está abajo
-                    string name = $"Cell_{newCell.getPosition().x}_{newCell.getPosition().y + 1}";  
-                    if(cellDict.ContainsKey(name)){
-                        cellDict[name].State(false,false,false);
-                    }
-                    
-                } else if((newCell.getPosition() - currentCell.getPosition()).y > 0) {
-                    //La nueva celda está arriba
-                    string name = $"Cell_{newCell.getPosition().x}_{newCell.getPosition().y - 1}";  
-                    if(cellDict.ContainsKey(name)){
-                        cellDict[name].State(false,false,false);
-                    }
+                Vector3 wallPosition = new Vector3();
+                wallPosition = (currentCell.getPosition() + newCell.getPosition())/2;
+                string name = $"Cell_{wallPosition.x}_{wallPosition.y}";  
+                if(cellDict.ContainsKey(name)){
+                    cellDict[name].State(false,false,false);
                 }
 
                 //Añadimos la celda a las visitadas
                 visited.Add(newCell.name);
                 stack.Add(newCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
+                Debug.Log($"Stack: {stack[stack.Count -1]}");
+                
             } else{
                 currentCell = cellDict[stack[stack.Count - 1]];
-                stack.Remove(newCell.name);
+                visited.Add(currentCell.name);
+                stack.RemoveAt(stack.Count -1);
             }
 
             //Condiciones de parada
-            if(count >= _width * _height * 100){
+            if(count >= _width * _height * 1){
                 Debug.Log($"Se recorrieron {count} celdas");
                 break;
             }
@@ -133,7 +118,7 @@ public class GridManager : MonoBehaviour
             }
             count++;
         }
-
+        
     }
 
     private List<string> NeighborhoodDFS(string currentCell){

@@ -35,6 +35,7 @@ public class CellGrid : MonoBehaviour
             _renderer.color = _colorWall;
             isWall = true;
         }
+        Debug.Log($"Se cambio la celda: Cell_{x}_{y}");
         
     }
     public void State(bool isWall, bool isInPath, bool isThePath){
