@@ -12,6 +12,8 @@ public class GridManager : MonoBehaviour
 
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
 
+    private float timer = 0.0f;
+
     private void Start() {
         Generator();
 
@@ -68,10 +70,12 @@ public class GridManager : MonoBehaviour
         currentCell = cellDict[startCell];
 
         int count = 0;
-
         while (true)
         {
-            Debug.Log(currentCell.name);
+        timer += Time.deltaTime;
+        if (timer >= 2)
+        {
+            //Debug.Log(currentCell.name);
             neighborhoodCells = NeighborhoodDFS(currentCell.name); // Actualizamos el vecindario
             
             //Eliminamos las celdas visitadas
@@ -80,7 +84,6 @@ public class GridManager : MonoBehaviour
                     neighborhoodCells.Remove(neighborhoodCells[i]);
                 }                    
             }
-            //Debug.Log($"Neighborhood :{neighborhoodCells.Count}");
 
             if(neighborhoodCells.Count > 0) {
                 
@@ -100,8 +103,8 @@ public class GridManager : MonoBehaviour
                 Debug.Log($"Stack: {stack[stack.Count -1]}");
                 
             } else{
-                currentCell = cellDict[stack[stack.Count - 1]];
                 visited.Add(currentCell.name);
+                currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
             }
 
@@ -117,7 +120,10 @@ public class GridManager : MonoBehaviour
                 break;
             }
             count++;
+            timer = 0;
+            }
         }
+    
         
     }
 
