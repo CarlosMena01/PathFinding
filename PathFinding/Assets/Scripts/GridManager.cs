@@ -16,8 +16,9 @@ public class GridManager : MonoBehaviour
 
     private void Start() {
         Generator();
-
-        MazeDFS("Cell_0_0");
+        // MazeDFS("Cell_0_0");
+        // BinaryTreeMaze();
+        StartCoroutine(BinaryTreeMaze());
     }
     
     private void Generator(){
@@ -148,6 +149,36 @@ public class GridManager : MonoBehaviour
             result.Add($"Cell_{positionCell.x - 2}_{positionCell.y}");
         }
         return result;
+    }
+
+    IEnumerator BinaryTreeMaze() {
+
+         for (int i = 0; i < _width; i += 2 )
+            {
+                for (int j = 0; j < _height; j += 1)
+                {
+                    
+                    CellGrid c = cellDict[$"Cell_{i}_{j}"];
+                    List<CellGrid> emptyNeighbours = new List<CellGrid>();
+
+                    if (i != 0 ){
+                        emptyNeighbours.Add(cellDict[$"Cell_{i - 1}_{j}"]);
+                    }
+
+                    if (j != 0 ){
+                        emptyNeighbours.Add(cellDict[$"Cell_{i}_{j - 1}"]);
+                    }
+
+                    if (emptyNeighbours.Count != 0)
+                    {
+                        emptyNeighbours[Random.Range(0, emptyNeighbours.Count)].State(true, false, false);
+                    }
+                    if (true)
+                        yield return new WaitForSeconds(0.05f);
+
+                }
+            }
+        
     }
 
 }

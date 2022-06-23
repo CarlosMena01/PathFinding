@@ -44,6 +44,10 @@ public class CellGrid : MonoBehaviour
         this.isThePath  = isThePath;
     }
 
+    public bool getStateWall() {
+        return this.isWall;
+    }
+
     public void Position(int x, int y){
         this.x = x;
         this.y = y;
