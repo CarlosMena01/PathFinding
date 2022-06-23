@@ -12,13 +12,11 @@ public class GridManager : MonoBehaviour
 
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
 
-    private float timer = 0.0f;
-
     private void Start() {
         Generator();
-        // MazeDFS("Cell_0_0");
-        // BinaryTreeMaze();
-        StartCoroutine(BinaryTreeMaze());
+        
+        //StartCoroutine(BinaryTreeMaze());
+        StartCoroutine(MazeDFS("Cell_0_0"));
     }
     
     private void Generator(){
@@ -47,7 +45,7 @@ public class GridManager : MonoBehaviour
         }            
     }
 
-    private void MazeDFS(string startCell){
+    private IEnumerator MazeDFS(string startCell){
         List<string>    neighborhoodCells   = NeighborhoodDFS(startCell);
         List<string>    visited             = new List<string>();
         List<string>    stack               = new List<string>();
@@ -62,21 +60,17 @@ public class GridManager : MonoBehaviour
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
                 currentCell = cellDict[$"Cell_{x}_{y}"];
-
-                bool isWall = !(x%2 == 0 && y%2 == 0); 
-                currentCell.State(isWall, false, false);
+                currentCell.State(true, false, false);
             }   
         }
         
         currentCell = cellDict[startCell];
-
+        currentCell.State(false,false,false);
         int count = 0;
         
         while (true)
         {
-        timer += Time.deltaTime;
-        if (timer >= 2)
-        {
+            currentCell.setColor(Color.red);
             Debug.Log($"Current: {currentCell.name}");
             neighborhoodCells = NeighborhoodDFS(currentCell.name); // Actualizamos el vecindario
             
@@ -105,12 +99,14 @@ public class GridManager : MonoBehaviour
                 visited.Add(newCell.name);
                 stack.Add(newCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
+                currentCell.State(false,false,false);
                 
             } else{
                 Debug.Log($"No vecinos");
                 visited.Add(currentCell.name);
                 currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
+                currentCell.State(false,false,false);
             }
 
             //Condiciones de parada
@@ -125,11 +121,8 @@ public class GridManager : MonoBehaviour
                 break;
             }
             count++;
-            timer = 0;
-            }
+            yield return new WaitForSeconds(0.05f);
         }
-    
-        
     }
 
     private List<string> NeighborhoodDFS(string currentCell){

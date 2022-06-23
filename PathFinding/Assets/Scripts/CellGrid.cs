@@ -12,7 +12,39 @@ public class CellGrid : MonoBehaviour
 
     [SerializeField] private int x,y;
 
-    public void Update() {
+
+    public void OnMouseDown() {
+        if(isWall) {
+            _renderer.color = _colorBase;
+            isWall = false;
+        } else {
+            _renderer.color = _colorWall;
+            isWall = true;
+        }
+        Debug.Log($"Se cambio la celda: Cell_{x}_{y}");
+        
+    }
+
+    private void Update() {
+        if(isWall) {
+            _renderer.color = _colorWall;
+
+        } else if(isInPath) {
+            if(isThePath) {
+                _renderer.color = _colorThePath;
+            } else {
+                _renderer.color = _colorInPath;
+            }
+        } else {
+            _renderer.color = _colorBase;
+        }    
+    }
+
+    public void State(bool isWall, bool isInPath, bool isThePath){
+        this.isWall     = isWall;
+        this.isInPath   = isInPath;
+        this.isThePath  = isThePath;
+
         if(isWall) {
             _renderer.color = _colorWall;
 
@@ -27,23 +59,6 @@ public class CellGrid : MonoBehaviour
         }
     }
 
-    public void OnMouseDown() {
-        if(isWall) {
-            _renderer.color = _colorBase;
-            isWall = false;
-        } else {
-            _renderer.color = _colorWall;
-            isWall = true;
-        }
-        Debug.Log($"Se cambio la celda: Cell_{x}_{y}");
-        
-    }
-    public void State(bool isWall, bool isInPath, bool isThePath){
-        this.isWall     = isWall;
-        this.isInPath   = isInPath;
-        this.isThePath  = isThePath;
-    }
-
     public bool getStateWall() {
         return this.isWall;
     }
@@ -55,5 +70,9 @@ public class CellGrid : MonoBehaviour
 
     public Vector3 getPosition(){
         return new Vector3(this.x, this.y);
+    }
+
+    public void setColor(Color newColor){
+        _renderer.color = newColor;
     }
 }
