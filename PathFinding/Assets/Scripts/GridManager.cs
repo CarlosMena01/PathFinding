@@ -17,10 +17,11 @@ public class GridManager : MonoBehaviour
     private void Start() {
         Generator();
         
-        //StartCoroutine(BinaryTreeMaze());
-        StartCoroutine(MazeDFS("Cell_0_0"));
-        StopCoroutine(MazeDFS("Cell_0_0"));
-        StartCoroutine(DFSPathFinding("Cell_0_0", "Cell_18_6"));
+        StartCoroutine(BinaryTreeMaze());
+        //StartCoroutine(MazeDFS("Cell_0_0"));
+        //StopCoroutine(MazeDFS("Cell_0_0"));
+        StopCoroutine(BinaryTreeMaze());
+        StartCoroutine(DFSPathFinding("Cell_35_0", "Cell_1_1"));
         //StopCoroutine(DFSPathFinding("Cell_0_0", "Cell_18_18"));
         
     }
@@ -196,6 +197,7 @@ public class GridManager : MonoBehaviour
 
                 }
             }
+            mazeEND = true;
         
     }
 
@@ -226,7 +228,6 @@ public class GridManager : MonoBehaviour
                 if(currentCell.getStateWall()) {
                     walls.Add(currentCell.name);
                     Debug.Log($"WALLS: {currentCell.name}");
-                    
                 }
             }   
         }
@@ -263,7 +264,7 @@ public class GridManager : MonoBehaviour
                 newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
                 //Añadimos la celda a las visitadas
                 visited.Add(newCell.name);
-                stack.Add(newCell.name);
+                stack.Add(currentCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
                 currentCell.State(false,true,false);
 
