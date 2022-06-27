@@ -12,12 +12,17 @@ public class GridManager : MonoBehaviour
 
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
 
+    bool mazeEND = false;
+
     private void Start() {
         Generator();
         
         //StartCoroutine(BinaryTreeMaze());
-        //StartCoroutine(MazeDFS("Cell_0_0"));
-        StartCoroutine(RecursiveDivision());
+        StartCoroutine(MazeDFS("Cell_0_0"));
+        StopCoroutine(MazeDFS("Cell_0_0"));
+        StartCoroutine(DFSPathFinding("Cell_0_0", "Cell_18_6"));
+        //StopCoroutine(DFSPathFinding("Cell_0_0", "Cell_18_18"));
+        
     }
     
     private void Generator(){
@@ -27,11 +32,9 @@ public class GridManager : MonoBehaviour
                 spawCell.name = $"Cell_{x}_{y}";
                 spawCell.Position(x,y);
                 spawCell.State(false, false, false);
-
                 cellDict.Add(spawCell.name, spawCell);
             }   
         }
-
         _cam.transform.position = new Vector3((float) _width/2 - 0.5f, (float) _height/2 - 0.5f, -100);
     }
 
@@ -72,7 +75,6 @@ public class GridManager : MonoBehaviour
         while (true)
         {
             currentCell.setColor(Color.red);
-            Debug.Log($"Current: {currentCell.name}");
             neighborhoodCells = NeighborhoodDFS(currentCell.name); // Actualizamos el vecindario
             
             //Eliminamos las celdas visitadas
@@ -103,7 +105,6 @@ public class GridManager : MonoBehaviour
                 currentCell.State(false,false,false);
                 
             } else{
-                Debug.Log($"No vecinos");
                 visited.Add(currentCell.name);
                 currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
@@ -124,6 +125,7 @@ public class GridManager : MonoBehaviour
             count++;
             yield return new WaitForSeconds(0.05f);
         }
+        mazeEND = true;
     }
 
     private List<string> NeighborhoodDFS(string currentCell){
@@ -141,6 +143,24 @@ public class GridManager : MonoBehaviour
         }
         if(cellDict.ContainsKey($"Cell_{positionCell.x - 2}_{positionCell.y}")) {
             result.Add($"Cell_{positionCell.x - 2}_{positionCell.y}");
+        }
+        return result;
+    }
+    private List<string> Neighborhood(string currentCell){
+        List<string> result = new List<string>();
+        Vector3 positionCell  = cellDict[currentCell].getPosition();
+
+        if(cellDict.ContainsKey($"Cell_{positionCell.x}_{positionCell.y + 1}")) {
+            result.Add($"Cell_{positionCell.x}_{positionCell.y + 1}");
+        }
+        if(cellDict.ContainsKey($"Cell_{positionCell.x + 1}_{positionCell.y}")) {
+            result.Add($"Cell_{positionCell.x + 1}_{positionCell.y}");
+        }
+        if(cellDict.ContainsKey($"Cell_{positionCell.x}_{positionCell.y - 1}")) {
+            result.Add($"Cell_{positionCell.x}_{positionCell.y - 1}");
+        }
+        if(cellDict.ContainsKey($"Cell_{positionCell.x - 1}_{positionCell.y}")) {
+            result.Add($"Cell_{positionCell.x - 1}_{positionCell.y}");
         }
         return result;
     }
@@ -272,5 +292,103 @@ public class GridManager : MonoBehaviour
 
         yieldBool = true;
     }
+    
+    public IEnumerator DFSPathFinding(string startCell, string endCell){
+        List<string>    neighborhoodCells   = Neighborhood(startCell);
+        List<string>    visited             = new List<string>();
+        List<string>    stack               = new List<string>();
+        List<string>    walls               = new List<string>();
 
+
+        CellGrid currentCell;
+        CellGrid newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
+
+        visited.Add(startCell);
+        stack.Add(startCell);
+
+        
+        
+        while(!mazeEND){
+
+            yield return new WaitForSeconds(0.05f);
+        }; //Esperamos a que se construya el laberinto
+
+        //Creamos una lista con todos los muros
+        for(int x = 0; x < _width; x++) {
+            for(int y = 0; y < _height; y++) {
+                currentCell = cellDict[$"Cell_{x}_{y}"];
+                if(currentCell.getStateWall()) {
+                    walls.Add(currentCell.name);
+                    Debug.Log($"WALLS: {currentCell.name}");
+                    
+                }
+            }   
+        }
+
+        currentCell = cellDict[startCell];
+        currentCell.State(false,true,false);
+        int count = 0;
+        while (mazeEND)
+        {
+            Debug.Log(currentCell.name);
+            currentCell.setColor(Color.red);
+
+            neighborhoodCells = Neighborhood(currentCell.name); // Actualizamos el vecindario
+            
+            //Eliminamos las celdas que fueron visitadas
+            for(int i = 0; i < visited.Count; i++) {   
+                if(neighborhoodCells.Contains(visited[i])) {
+                    //Debug.Log($"Removed: {neighborhoodCells[i]}");
+                    neighborhoodCells.Remove(visited[i]);   
+                    //Debug.Log($"Visited: {visited[i]}");
+                }
+            }
+
+            //Eliminamos las celdas que son muros
+            for(int i = 0; i < walls.Count; i++) {   
+                if(neighborhoodCells.Contains(walls[i])) {
+                    //Debug.Log($"Removed: {neighborhoodCells[i]}");
+                    neighborhoodCells.Remove(walls[i]);   
+                }
+            }
+            
+            if(neighborhoodCells.Count > 0) {
+                
+                newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
+                //Añadimos la celda a las visitadas
+                visited.Add(newCell.name);
+                stack.Add(newCell.name);
+                currentCell = newCell; //Nos movemos a la nueva celda
+                currentCell.State(false,true,false);
+
+            } else{
+                Debug.Log($"NV: {currentCell.name}");
+                visited.Add(currentCell.name);
+                currentCell = cellDict[stack[stack.Count - 1]];
+                stack.RemoveAt(stack.Count -1);
+                currentCell.State(false,true,false);
+            }
+
+            //Condiciones de parada
+            if(count >= _width * _height * 1){
+                Debug.Log($"Se recorrieron {count} celdas");
+                break;
+            }
+            if(currentCell.name == endCell){
+                stack.Add(currentCell.name);
+                break;
+            }
+            if(stack.Count < 1){
+                Debug.Log("Stack está vacío");
+                break;
+            }
+            count++;
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        foreach(string cell in stack) {
+            cellDict[cell].State(false,true,true);
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
 }
