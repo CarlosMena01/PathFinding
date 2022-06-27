@@ -142,8 +142,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _colorBase: {r: 1, g: 1, b: 1, a: 1}
   _colorWall: {r: 0.06926012, g: 1, b: 0, a: 1}
-  _colorInPath: {r: 0, g: 0, b: 0, a: 0}
-  _colorThePath: {r: 0, g: 0, b: 0, a: 0}
+  _colorInPath: {r: 0, g: 0, b: 0.6117647, a: 1}
+  _colorThePath: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
   _renderer: {fileID: 359865306}
   isWall: 0
   isInPath: 0
