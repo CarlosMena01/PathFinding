@@ -8,6 +8,8 @@ public class GridManager : MonoBehaviour
 
     [SerializeField]  private CellGrid _cellPrefab;
 
+    [SerializeField]  private Outskirts _outskirtPrefab;
+
     [SerializeField]  private Transform _cam;
 
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
@@ -28,6 +30,7 @@ public class GridManager : MonoBehaviour
     }
     
     private void Generator(){
+        //Creamos toda la cuadricula
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
                 var spawCell = Instantiate(_cellPrefab, new Vector3(x,y), Quaternion.identity);
@@ -38,6 +41,7 @@ public class GridManager : MonoBehaviour
             }   
         }
         _cam.transform.position = new Vector3((float) _width/2 - 0.5f, (float) _height/2 - 0.5f, -100);
+
     }
 
     private void MazeChess(){
