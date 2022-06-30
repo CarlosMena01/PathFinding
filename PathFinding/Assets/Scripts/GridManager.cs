@@ -16,8 +16,9 @@ public class GridManager : MonoBehaviour
 
     private void Start() {
         Generator();
-        
-        StartCoroutine(BinaryTreeMaze());
+
+        //StartCoroutine(BinaryTreeMaze());
+        StartCoroutine(RecursiveDivision());
         //StartCoroutine(MazeDFS("Cell_0_0"));
         //StopCoroutine(MazeDFS("Cell_0_0"));
         StopCoroutine(BinaryTreeMaze());
@@ -32,7 +33,7 @@ public class GridManager : MonoBehaviour
                 var spawCell = Instantiate(_cellPrefab, new Vector3(x,y), Quaternion.identity);
                 spawCell.name = $"Cell_{x}_{y}";
                 spawCell.Position(x,y);
-                spawCell.State(false, false, false);
+                spawCell.State(false, false, false, false, false);
                 cellDict.Add(spawCell.name, spawCell);
             }   
         }
@@ -45,7 +46,7 @@ public class GridManager : MonoBehaviour
                 var currentCell = cellDict[$"Cell_{x}_{y}"];
 
                 bool isWall = ((x%2 == 0 && y%2 != 0) || (x%2 != 0 && y%2 == 0)); 
-                currentCell.State(isWall, false, false);
+                currentCell.State(isWall, false, false, false, false);
             }   
         }            
     }
@@ -65,12 +66,12 @@ public class GridManager : MonoBehaviour
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
                 currentCell = cellDict[$"Cell_{x}_{y}"];
-                currentCell.State(true, false, false);
+                currentCell.State(true, false, false, false, false);
             }   
         }
         
         currentCell = cellDict[startCell];
-        currentCell.State(false,false,false);
+        currentCell.State(false,false,false, false, false);
         int count = 0;
         
         while (true)
@@ -96,20 +97,20 @@ public class GridManager : MonoBehaviour
                 wallPosition = (currentCell.getPosition() + newCell.getPosition())/2;
                 string name = $"Cell_{wallPosition.x}_{wallPosition.y}";  
                 if(cellDict.ContainsKey(name)){
-                    cellDict[name].State(false,false,false);
+                    cellDict[name].State(false,false,false, false, false);
                 }
 
                 //Añadimos la celda a las visitadas
                 visited.Add(newCell.name);
                 stack.Add(newCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
-                currentCell.State(false,false,false);
+                currentCell.State(false,false,false, false, false);
                 
             } else{
                 visited.Add(currentCell.name);
                 currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
-                currentCell.State(false,false,false);
+                currentCell.State(false,false,false, false, false);
             }
 
             //Condiciones de parada
@@ -176,7 +177,7 @@ public class GridManager : MonoBehaviour
                     CellGrid c = cellDict[$"Cell_{i}_{j}"];
                     List<CellGrid> emptyNeighbours = new List<CellGrid>();
 
-                    c.State(true, false, false);
+                    c.State(true, false, false, false, false);
 
                     if (i != 0 && cellDict[$"Cell_{i-1}_{j}"].getStateWall() == false){
                         emptyNeighbours.Add(cellDict[$"Cell_{i - 1}_{j}"]);
@@ -188,7 +189,7 @@ public class GridManager : MonoBehaviour
 
                     if (emptyNeighbours.Count != 0)
                     {
-                        emptyNeighbours[Random.Range(0, emptyNeighbours.Count)].State(true, false, false);
+                        emptyNeighbours[Random.Range(0, emptyNeighbours.Count)].State(true, false, false, false, false);
                     }
                     if (true)
                         yield return new WaitForSeconds(0.00f);
@@ -214,7 +215,7 @@ public class GridManager : MonoBehaviour
     {
         if (lowerX >= upperX - 2 || lowerY >= upperY - 2) yield break;
 
-        if (Random.Range(0, 2) == 0)
+        if (Random.Range(0, 20)%2 == 0)
         {
             yield return StartCoroutine(Vertical(lowerX, upperX, lowerY, upperY));
 
@@ -253,11 +254,11 @@ public class GridManager : MonoBehaviour
             {
                 currentCell = cellDict[$"Cell_{idx}_{i}"];
                 currentCell.setColor(Color.red);
-                currentCell.State(true, false, false);
+                currentCell.State(true, false, false, false, false);
             }
 
             currentCell = cellDict[$"Cell_{idx}_{wallSpaceidx}"];
-            currentCell.State(false, false, false);
+            currentCell.State(false, false, false, false, false);
 
             yield return StartCoroutine(RecursivePathing(lowerX, idx, lowerY, upperY));
             yield return StartCoroutine(RecursivePathing(idx, upperX, lowerY, upperY));
@@ -283,11 +284,11 @@ public class GridManager : MonoBehaviour
         for (int i = lowerX + 1; i < upperX; i++)
         {
             currentCell = cellDict[$"Cell_{i}_{idx}"];
-            currentCell.State(true, false, false);
+            currentCell.State(true, false, false, false, false);
         }
 
         currentCell = cellDict[$"Cell_{wallSpaceidx}_{idx}"];
-        currentCell.State(false, false, false);
+        currentCell.State(false, false, false, false, false);
 
         yield return StartCoroutine(RecursivePathing(lowerX, upperX, lowerY, idx));
         yield return StartCoroutine(RecursivePathing(lowerX, upperX, idx, upperY));
@@ -327,7 +328,7 @@ public class GridManager : MonoBehaviour
         }
 
         currentCell = cellDict[startCell];
-        currentCell.State(false,true,false);
+        currentCell.State(false,true,false, false, false);
         int count = 0;
         while (mazeEND)
         {
@@ -360,14 +361,14 @@ public class GridManager : MonoBehaviour
                 visited.Add(newCell.name);
                 stack.Add(currentCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
-                currentCell.State(false,true,false);
+                currentCell.State(false,true,false, false, false);
 
             } else{
                 Debug.Log($"NV: {currentCell.name}");
                 visited.Add(currentCell.name);
                 currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
-                currentCell.State(false,true,false);
+                currentCell.State(false,true,false, false, false);
             }
 
             //Condiciones de parada
@@ -388,7 +389,7 @@ public class GridManager : MonoBehaviour
         }
 
         foreach(string cell in stack) {
-            cellDict[cell].State(false,true,true);
+            cellDict[cell].State(false,true,true, false, false);
             yield return new WaitForSeconds(0.05f);
         }
     }
