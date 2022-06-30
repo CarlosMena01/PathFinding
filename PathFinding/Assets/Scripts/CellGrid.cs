@@ -13,6 +13,7 @@ public class CellGrid : MonoBehaviour
     [SerializeField] private int x,y;
 
 
+
     public void OnMouseDown() {
         if(isWall) {
             _renderer.color = _colorBase;
@@ -35,7 +36,12 @@ public class CellGrid : MonoBehaviour
             } else {
                 _renderer.color = _colorInPath;
             }
-        } else {
+        } else if(isStart){
+            _renderer.color = _colorStart;
+        } else if(isEnd){
+            _renderer.color = _colorEnd;
+        }
+        else {
             _renderer.color = _colorBase;
         }
 
@@ -43,22 +49,18 @@ public class CellGrid : MonoBehaviour
             if (Input.GetMouseButtonDown(1)){
                 Debug.Log("Pressed ctrl+ right click.");
                 if(isEnd) {
-                    _renderer.color = _colorBase;
                     isEnd = false;
                     Debug.Log("Set to base");
                 } else {
-                    _renderer.color = _colorEnd;
                     isEnd = true;
                     Debug.Log("Set to end");
                 }
             } else if (Input.GetMouseButtonDown(0)){
                 Debug.Log("Pressed ctrl+ left click.");
                 if(isStart) {
-                    _renderer.color = _colorBase;
                     isStart = false;
                     Debug.Log("Set to base");
                 } else {
-                    _renderer.color = _colorStart;
                     isStart = true;
                     Debug.Log("Set to start");
                 }

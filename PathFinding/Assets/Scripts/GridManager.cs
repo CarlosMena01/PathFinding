@@ -10,6 +10,7 @@ public class GridManager : MonoBehaviour
 
     [SerializeField]  private Outskirts _outskirtPrefab;
 
+
     [SerializeField]  private Transform _cam;
 
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
@@ -40,6 +41,19 @@ public class GridManager : MonoBehaviour
                 cellDict.Add(spawCell.name, spawCell);
             }   
         }
+
+        //Creamos los contornos
+        for(int x = -1; x < _width +1; x++) {
+            var spawOutskirt = Instantiate(_outskirtPrefab, new Vector3(x,-1), Quaternion.identity);
+            spawOutskirt = Instantiate(_outskirtPrefab, new Vector3(x, _height), Quaternion.identity);
+
+        }
+        for(int y = -1; y < _height +1; y++) {
+            var spawOutskirt = Instantiate(_outskirtPrefab, new Vector3(-1,y), Quaternion.identity);
+            spawOutskirt = Instantiate(_outskirtPrefab, new Vector3(_width,y), Quaternion.identity);
+
+        }   
+
         _cam.transform.position = new Vector3((float) _width/2 - 0.5f, (float) _height/2 - 0.5f, -100);
 
     }
