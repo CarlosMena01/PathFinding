@@ -12,17 +12,44 @@ public class CellGrid : MonoBehaviour
 
     [SerializeField] private int x,y;
 
+    string startCell;
+    string endCell;
 
     public void OnMouseDown() {
-        if(isWall) {
-            _renderer.color = _colorBase;
-            isWall = false;
+        if (Input.GetKey(KeyCode.LeftControl)){
+            Debug.Log("Pressed ctrl+ left click.");
+            if(isEnd) {
+                _renderer.color = _colorBase;
+                isEnd = false;
+                Debug.Log("Set to base");
+            } else {
+                _renderer.color = _colorEnd;
+                isEnd = true;
+                endCell = $"Cell_{x}_{y}";
+                Debug.Log($"Cell_{x}_{y} Set to end");
+            }
+        } else if (Input.GetKey(KeyCode.LeftAlt)){
+            Debug.Log("Pressed alt+ left click.");
+            if(isStart) {
+                _renderer.color = _colorBase;
+                isStart = false;
+                Debug.Log("Set to base");
+            } else {
+                _renderer.color = _colorStart;
+                isStart = true;
+                startCell = $"Cell_{x}_{y}";
+                Debug.Log($"Cell_{x}_{y} Set to start");
+            }
         } else {
-            _renderer.color = _colorWall;
-            isWall = true;
+            if(isWall) {
+                _renderer.color = _colorBase;
+                isWall = false;
+            } else {
+                _renderer.color = _colorWall;
+                isWall = true;
+            }
+            Debug.Log($"Se cambio la celda: Cell_{x}_{y}");
         }
-        Debug.Log($"Se cambio la celda: Cell_{x}_{y}");
-        
     }
 
     private void Update() {
@@ -37,32 +64,6 @@ public class CellGrid : MonoBehaviour
             }
         } else {
             _renderer.color = _colorBase;
-        }
-
-        if (Input.GetKey(KeyCode.LeftControl)){
-            if (Input.GetMouseButtonDown(1)){
-                Debug.Log("Pressed ctrl+ right click.");
-                if(isEnd) {
-                    _renderer.color = _colorBase;
-                    isEnd = false;
-                    Debug.Log("Set to base");
-                } else {
-                    _renderer.color = _colorEnd;
-                    isEnd = true;
-                    Debug.Log("Set to end");
-                }
-            } else if (Input.GetMouseButtonDown(0)){
-                Debug.Log("Pressed ctrl+ left click.");
-                if(isStart) {
-                    _renderer.color = _colorBase;
-                    isStart = false;
-                    Debug.Log("Set to base");
-                } else {
-                    _renderer.color = _colorStart;
-                    isStart = true;
-                    Debug.Log("Set to start");
-                }
-            }
         }
     }
 
@@ -93,6 +94,14 @@ public class CellGrid : MonoBehaviour
 
     public bool getStateWall() {
         return this.isWall;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
     }
 
     public void Position(int x, int y){
