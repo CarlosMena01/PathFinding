@@ -2,8 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BinaryTree : MonoBehaviour
+public class BinaryTreeMazeGenerator : MonoBehaviour
 {
+    public class BinaryTree : MonoBehaviour
+{
+    public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
+    
+    [SerializeField] GridManager gridManager;
+
+    private float _height;
+    private float _width; 
+
+    public  void Start() {
+        _width = gridManager.getDimensions().y; 
+        _height = gridManager.getDimensions().x;
+        cellDict = gridManager.getCellsDict();
+
+    }
+
 
     IEnumerator BinaryTreeMaze() {
 
@@ -34,6 +50,7 @@ public class BinaryTree : MonoBehaviour
 
                 }
             }
-            mazeEND = true;
+            gridManager.setMazeState(true);
     }
+}   
 }

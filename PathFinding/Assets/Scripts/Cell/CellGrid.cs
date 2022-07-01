@@ -8,38 +8,20 @@ public class CellGrid : MonoBehaviour
     
     [SerializeField] private SpriteRenderer _renderer;
 
+    [SerializeField] private GridManager gridManager;
+
     [SerializeField] private bool isWall, isInPath, isThePath;
 
     [SerializeField] private int x,y;
 
-    string startCell;
-    string endCell;
-
     public void OnMouseDown() {
         if (Input.GetKey(KeyCode.LeftControl)){
             Debug.Log("Pressed ctrl+ left click.");
-            if(isEnd) {
-                _renderer.color = _colorBase;
-                isEnd = false;
-                Debug.Log("Set to base");
-            } else {
-                _renderer.color = _colorEnd;
-                isEnd = true;
-                endCell = $"Cell_{x}_{y}";
-                Debug.Log($"Cell_{x}_{y} Set to end");
-            }
+            gridManager.setEnd($"Cell_{x}_{y}");
+            
         } else if (Input.GetKey(KeyCode.LeftAlt)){
             Debug.Log("Pressed alt+ left click.");
-            if(isStart) {
-                _renderer.color = _colorBase;
-                isStart = false;
-                Debug.Log("Set to base");
-            } else {
-                _renderer.color = _colorStart;
-                isStart = true;
-                startCell = $"Cell_{x}_{y}";
-                Debug.Log($"Cell_{x}_{y} Set to start");
-            }
+            gridManager.setStart($"Cell_{x}_{y}");
         } else {
             if(isWall) {
                 _renderer.color = _colorBase;

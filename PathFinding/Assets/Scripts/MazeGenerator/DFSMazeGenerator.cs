@@ -2,8 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DFS : MonoBehaviour
+public class DFSMazeGenerator : MonoBehaviour
 {
+    [SerializeField] private GridManager gridManager;
+    
+    private float _height, _width;
+
+    public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
+    
+
+    public  void Start() {
+        _height = gridManager.getDimensions().x;
+        _width = gridManager.getDimensions().y; 
+        cellDict = gridManager.getCellsDict();
+    }
+
+
     IEnumerator MazeDFS(string startCell){
         List<string>    neighborhoodCells   = NeighborhoodDFS(startCell);
         List<string>    visited             = new List<string>();
@@ -80,7 +94,7 @@ public class DFS : MonoBehaviour
             count++;
             yield return new WaitForSeconds(0.05f);
         }
-        mazeEND = true;
+        gridManager.setMazeState(true);
     }
 
     List<string> NeighborhoodDFS(string currentCell){
@@ -98,25 +112,6 @@ public class DFS : MonoBehaviour
         }
         if(cellDict.ContainsKey($"Cell_{positionCell.x - 2}_{positionCell.y}")) {
             result.Add($"Cell_{positionCell.x - 2}_{positionCell.y}");
-        }
-        return result;
-    }
-
-    List<string> Neighborhood(string currentCell){
-        List<string> result = new List<string>();
-        Vector3 positionCell  = cellDict[currentCell].getPosition();
-
-        if(cellDict.ContainsKey($"Cell_{positionCell.x}_{positionCell.y + 1}")) {
-            result.Add($"Cell_{positionCell.x}_{positionCell.y + 1}");
-        }
-        if(cellDict.ContainsKey($"Cell_{positionCell.x + 1}_{positionCell.y}")) {
-            result.Add($"Cell_{positionCell.x + 1}_{positionCell.y}");
-        }
-        if(cellDict.ContainsKey($"Cell_{positionCell.x}_{positionCell.y - 1}")) {
-            result.Add($"Cell_{positionCell.x}_{positionCell.y - 1}");
-        }
-        if(cellDict.ContainsKey($"Cell_{positionCell.x - 1}_{positionCell.y}")) {
-            result.Add($"Cell_{positionCell.x - 1}_{positionCell.y}");
         }
         return result;
     }

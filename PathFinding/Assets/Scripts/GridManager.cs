@@ -8,15 +8,19 @@ public class GridManager : MonoBehaviour
 
     [SerializeField]  private CellGrid _cellPrefab;
 
+    [SerializeField]  private Outskirts _outskirtPrefab;
+
     [SerializeField]  private Transform _cam;
 
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
 
     bool mazeEND = false;
 
+    private string startCell;
+    private string endCell;
+
     private void Start() {
         Generator();
-        
     }
     
     private void Generator(){
@@ -26,7 +30,7 @@ public class GridManager : MonoBehaviour
                 var spawCell = Instantiate(_cellPrefab, new Vector3(x,y), Quaternion.identity);
                 spawCell.name = $"Cell_{x}_{y}";
                 spawCell.Position(x,y);
-                spawCell.State(false, false, false, false, false);
+                spawCell.State(false, false, false);
                 cellDict.Add(spawCell.name, spawCell);
             }   
         }
@@ -45,5 +49,29 @@ public class GridManager : MonoBehaviour
 
         _cam.transform.position = new Vector3((float) _width/2 - 0.5f, (float) _height/2 - 0.5f, -100);
 
+    }
+
+    public Vector3 getDimensions(){
+        return new Vector3(this._height, this._width);
+    }
+
+    public Dictionary<string, CellGrid> getCellsDict(){
+        return this.cellDict;
+    }
+
+    public bool isMazeEnd(){
+        return this.mazeEND;
+    } 
+
+    public void setMazeState(bool mazeState){
+        this.mazeEND = mazeState;
+    } 
+
+    public void setStart(string startName){
+        this.startCell = startName;
+    }
+
+    public void setEnd(string endName){
+        this.endCell = endName;
     }
 }

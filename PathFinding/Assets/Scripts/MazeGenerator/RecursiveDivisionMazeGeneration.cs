@@ -2,8 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecursiveDivisionMaze: MonoBehaviour {
-        
+public class RecursiveDivisionMazeGeneration : MonoBehaviour
+{
+    public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
+    
+    [SerializeField] GridManager gridManager;
+
+    private int _height;
+    private int _width;
+
+    public  void Start() {
+        _height = (int) gridManager.getDimensions().x;
+        _width = (int) gridManager.getDimensions().y; 
+        cellDict = gridManager.getCellsDict();
+    }
+
     bool yieldBool;
 
     IEnumerator RecursiveDivision()
@@ -100,5 +113,3 @@ public class RecursiveDivisionMaze: MonoBehaviour {
         yieldBool = true;
     }
 }
-
-    

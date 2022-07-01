@@ -2,24 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DFSPathing: MonoBehaviour {
+public class DFSPathFinding : MonoBehaviour
+{   
+    [SerializeField] GridManager gridManager;
 
-    IEnumerator BFSPathfinding(string start, string end){
-        List<string> neighborhoodCells = Neighborhood(start);
-        List<string> visited = new List<string>();
-        List<string> stack = new List<string>();
-        List<string> walls = new List<string>();
+    public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
+
+    bool mazeEND;
+
+    private float _height;
+    private float _width;
+
+    public  void Start() {
+        mazeEND = gridManager.isMazeEnd();
+        _height = gridManager.getDimensions().x;
+        _width = gridManager.getDimensions().y; 
+        cellDict = gridManager.getCellsDict();
+    }
+    IEnumerator DFSPathfinding(string startCell, string endCell){
+        List<string>    neighborhoodCells   = Neighborhood(startCell);
+        List<string>    visited             = new List<string>();
+        List<string>    stack               = new List<string>();
+        List<string>    walls               = new List<string>();
 
 
         CellGrid currentCell;
         CellGrid newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
 
-        visited.Add(start);
-        stack.Add(start);
+        visited.Add(startCell);
+        stack.Add(startCell);
+
+        
         
         while(!mazeEND){
 
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.05f);
         }; //Esperamos a que se construya el laberinto
 
         //Creamos una lista con todos los muros
@@ -28,11 +45,12 @@ public class DFSPathing: MonoBehaviour {
                 currentCell = cellDict[$"Cell_{x}_{y}"];
                 if(currentCell.getStateWall()) {
                     walls.Add(currentCell.name);
+                    Debug.Log($"WALLS: {currentCell.name}");
                 }
             }   
         }
 
-        currentCell = cellDict[start];
+        currentCell = cellDict[startCell];
         currentCell.State(false,true,false);
         int count = 0;
         while (mazeEND)
@@ -69,6 +87,7 @@ public class DFSPathing: MonoBehaviour {
                 currentCell.State(false,true,false);
 
             } else{
+                Debug.Log($"NV: {currentCell.name}");
                 visited.Add(currentCell.name);
                 currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
@@ -77,13 +96,15 @@ public class DFSPathing: MonoBehaviour {
 
             //Condiciones de parada
             if(count >= _width * _height * 1){
+                Debug.Log($"Se recorrieron {count} celdas");
                 break;
             }
-            if(currentCell.name == end){
+            if(currentCell.name == endCell){
                 stack.Add(currentCell.name);
                 break;
             }
             if(stack.Count < 1){
+                Debug.Log("Stack está vacío");
                 break;
             }
             count++;
@@ -95,59 +116,23 @@ public class DFSPathing: MonoBehaviour {
             yield return new WaitForSeconds(0.05f);
         }
     }
+    
+    List<string> Neighborhood(string currentCell){
+        List<string> result = new List<string>();
+        Vector3 positionCell  = cellDict[currentCell].getPosition();
+
+        if(cellDict.ContainsKey($"Cell_{positionCell.x}_{positionCell.y + 1}")) {
+            result.Add($"Cell_{positionCell.x}_{positionCell.y + 1}");
+        }
+        if(cellDict.ContainsKey($"Cell_{positionCell.x + 1}_{positionCell.y}")) {
+            result.Add($"Cell_{positionCell.x + 1}_{positionCell.y}");
+        }
+        if(cellDict.ContainsKey($"Cell_{positionCell.x}_{positionCell.y - 1}")) {
+            result.Add($"Cell_{positionCell.x}_{positionCell.y - 1}");
+        }
+        if(cellDict.ContainsKey($"Cell_{positionCell.x - 1}_{positionCell.y}")) {
+            result.Add($"Cell_{positionCell.x - 1}_{positionCell.y}");
+        }
+        return result;
+    }
 }
-
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-
-// public class BFSPathing: MonoBehaviour {
-
-//     IEnumerator BFSPathing(string start, string target){
-
-//         while(!mazeEND){
-//             yield return new WaitForSeconds(0.05f);
-//         }; 
-//         // CellGrid cells = cellDict[$"Cell_{i}_{j}"];
-//         List<string> visited = new List<string>();
-
-//         Queue<CellGrid> queue = new Queue<CellGrid>();
-//         CellGrid c_start = cellDict[start];
-//         queue.Enqueue(c_start);
-        
-//         c_start.State(false, true, true);
-//         while (queue.Count != 0)
-//         {
-//             CellGrid c = queue.Dequeue();
-//             c.State(false, true, false);
-
-//             if ($"Cell_{c.getPosition().x}_{c.getPosition().y}" == target) break;
-
-//             List<CellGrid> neighbours = new List<CellGrid>();
-
-//             if (neighbours.Count == 0) continue;
-
-//             for (int i = 0; i < neighbours.Count; i++)
-//             {
-//                 CellGrid neighbour = neighbours[i];
-
-//                 if (neighbour.getStateWall() == true) continue;
-
-//                 neighbour.State(false, true, false);
-//                 queue.Enqueue(neighbour);
-
-//                 // if (target != neighbour)
-//                 //     PathfindingTools.SetCellColorByDistance(neighbour, neighbour.GetHelperNum());
-
-//                 if (target != $"Cell_{neighbour.getPosition().x}_{neighbour.getPosition().y}"){
-//                     c.State(false, true, false);
-//                 }
-//             }
-
-//             if (true)
-//                 yield return new WaitForSeconds(0.01f);
-
-//         }
-
-//     }
-// }
