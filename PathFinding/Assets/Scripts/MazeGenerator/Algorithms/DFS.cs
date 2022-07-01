@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DFSMaze: Monobehaviour {
-
+public class DFS : MonoBehaviour
+{
     IEnumerator MazeDFS(string startCell){
         List<string>    neighborhoodCells   = NeighborhoodDFS(startCell);
         List<string>    visited             = new List<string>();

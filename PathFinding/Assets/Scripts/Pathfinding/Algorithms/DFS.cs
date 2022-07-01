@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class DFSPathing: MonoBehaviour {
 
+    public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
+    
+    [SerializeField] GridManager gridManager;
+
+    public  void Start() {
+        cellDict = gridManager.cellDict.ToDictionary(entry => entry.Key, entry => entry.Value);
+    }
+
     IEnumerator DFSPathFinding(string startCell, string endCell){
         List<string>    neighborhoodCells   = Neighborhood(startCell);
         List<string>    visited             = new List<string>();

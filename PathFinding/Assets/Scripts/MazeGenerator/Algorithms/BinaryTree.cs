@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BinaryTreeMaze: MonoBehaviuor {
-        IEnumerator BinaryTreeMaze() {
+public class BinaryTree : MonoBehaviour
+{
+
+    IEnumerator BinaryTreeMaze() {
 
          for (int i = 0; i < _width; i += 2 )
             {
