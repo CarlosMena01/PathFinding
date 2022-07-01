@@ -8,9 +8,6 @@ public class GridManager : MonoBehaviour
 
     [SerializeField]  private CellGrid _cellPrefab;
 
-    [SerializeField]  private Outskirts _outskirtPrefab;
-
-
     [SerializeField]  private Transform _cam;
 
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
@@ -19,43 +16,29 @@ public class GridManager : MonoBehaviour
 
     private void Start() {
         Generator();
-
-        //StartCoroutine(BinaryTreeMaze());
-        StartCoroutine(RecursiveDivision());
-        //StartCoroutine(MazeDFS("Cell_0_0"));
-        //StopCoroutine(MazeDFS("Cell_0_0"));
-        StopCoroutine(BinaryTreeMaze());
-        StartCoroutine(DFSPathFinding("Cell_35_0", "Cell_1_1"));
+        
+        StartCoroutine(BinaryTreeMaze());
+        // StartCoroutine(MazeDFS("Cell_0_0"));
+        // StopCoroutine(MazeDFS("Cell_0_0"));
+        //StartCoroutine(DFSPathFinding("Cell_0_0", "Cell_18_6"));
+        StartCoroutine(BFSPathing("Cell_1_1", "Cell_23_18"));
         //StopCoroutine(DFSPathFinding("Cell_0_0", "Cell_18_18"));
         
     }
     
     private void Generator(){
-        //Creamos toda la cuadricula
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
                 var spawCell = Instantiate(_cellPrefab, new Vector3(x,y), Quaternion.identity);
                 spawCell.name = $"Cell_{x}_{y}";
                 spawCell.Position(x,y);
-                spawCell.State(false, false, false, false, false);
+                spawCell.State(false, false, false);
+
                 cellDict.Add(spawCell.name, spawCell);
             }   
         }
 
-        //Creamos los contornos
-        for(int x = -1; x < _width +1; x++) {
-            var spawOutskirt = Instantiate(_outskirtPrefab, new Vector3(x,-1), Quaternion.identity);
-            spawOutskirt = Instantiate(_outskirtPrefab, new Vector3(x, _height), Quaternion.identity);
-
-        }
-        for(int y = -1; y < _height +1; y++) {
-            var spawOutskirt = Instantiate(_outskirtPrefab, new Vector3(-1,y), Quaternion.identity);
-            spawOutskirt = Instantiate(_outskirtPrefab, new Vector3(_width,y), Quaternion.identity);
-
-        }   
-
         _cam.transform.position = new Vector3((float) _width/2 - 0.5f, (float) _height/2 - 0.5f, -100);
-
     }
 
     private void MazeChess(){
@@ -64,7 +47,7 @@ public class GridManager : MonoBehaviour
                 var currentCell = cellDict[$"Cell_{x}_{y}"];
 
                 bool isWall = ((x%2 == 0 && y%2 != 0) || (x%2 != 0 && y%2 == 0)); 
-                currentCell.State(isWall, false, false, false, false);
+                currentCell.State(isWall, false, false);
             }   
         }            
     }
@@ -84,12 +67,12 @@ public class GridManager : MonoBehaviour
         for(int x = 0; x < _width; x++) {
             for(int y = 0; y < _height; y++) {
                 currentCell = cellDict[$"Cell_{x}_{y}"];
-                currentCell.State(true, false, false, false, false);
+                currentCell.State(true, false, false);
             }   
         }
         
         currentCell = cellDict[startCell];
-        currentCell.State(false,false,false, false, false);
+        currentCell.State(false,false,false);
         int count = 0;
         
         while (true)
@@ -115,20 +98,20 @@ public class GridManager : MonoBehaviour
                 wallPosition = (currentCell.getPosition() + newCell.getPosition())/2;
                 string name = $"Cell_{wallPosition.x}_{wallPosition.y}";  
                 if(cellDict.ContainsKey(name)){
-                    cellDict[name].State(false,false,false, false, false);
+                    cellDict[name].State(false,false,false);
                 }
 
                 //Añadimos la celda a las visitadas
                 visited.Add(newCell.name);
                 stack.Add(newCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
-                currentCell.State(false,false,false, false, false);
+                currentCell.State(false,false,false);
                 
             } else{
                 visited.Add(currentCell.name);
                 currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
-                currentCell.State(false,false,false, false, false);
+                currentCell.State(false,false,false);
             }
 
             //Condiciones de parada
@@ -195,7 +178,7 @@ public class GridManager : MonoBehaviour
                     CellGrid c = cellDict[$"Cell_{i}_{j}"];
                     List<CellGrid> emptyNeighbours = new List<CellGrid>();
 
-                    c.State(true, false, false, false, false);
+                    c.State(true, false, false);
 
                     if (i != 0 && cellDict[$"Cell_{i-1}_{j}"].getStateWall() == false){
                         emptyNeighbours.Add(cellDict[$"Cell_{i - 1}_{j}"]);
@@ -207,7 +190,7 @@ public class GridManager : MonoBehaviour
 
                     if (emptyNeighbours.Count != 0)
                     {
-                        emptyNeighbours[Random.Range(0, emptyNeighbours.Count)].State(true, false, false, false, false);
+                        emptyNeighbours[Random.Range(0, emptyNeighbours.Count)].State(true, false, false);
                     }
                     if (true)
                         yield return new WaitForSeconds(0.01f);
@@ -265,102 +248,6 @@ public class GridManager : MonoBehaviour
 
     }
 
-    bool yieldBool;
-
-    IEnumerator RecursiveDivision()
-    {
-        int lowerX=0;
-        int lowerY=0;
-        int upperX=_width;
-        int upperY=_height;
-        yield return RecursivePathing(lowerX, upperX, lowerY, upperY);
-    }
-
-    IEnumerator RecursivePathing(int lowerX, int upperX, int lowerY, int upperY)
-    {
-        if (lowerX >= upperX - 2 || lowerY >= upperY - 2) yield break;
-
-        if (Random.Range(0, 20)%2 == 0)
-        {
-            yield return StartCoroutine(Vertical(lowerX, upperX, lowerY, upperY));
-
-            if (!yieldBool)
-            {
-                Horizontal(lowerX, upperX, lowerY, upperY);
-            }
-        }
-        else
-        {
-            yield return StartCoroutine(Horizontal(lowerX, upperX, lowerY, upperY));
-
-            if (!yieldBool)
-            {
-                Vertical(lowerX, upperX, lowerY, upperY);
-            }
-
-        }
-    }
-
-    IEnumerator Vertical(int lowerX, int upperX, int lowerY, int upperY)
-    {
-        CellGrid currentCell;
-        
-        if (upperX - lowerX - 3 <= 0)
-        {
-            yieldBool = false;
-            yield break;
-        }
-        else
-        {
-            int idx = Random.Range(0, upperX - lowerX - 3) + lowerX + 2;
-            int wallSpaceidx = Random.Range(0, upperY - lowerY - 1) + lowerY + 1;
-
-            for (int i = lowerY + 1; i < upperY; i++)
-            {
-                currentCell = cellDict[$"Cell_{idx}_{i}"];
-                currentCell.setColor(Color.red);
-                currentCell.State(true, false, false, false, false);
-            }
-
-            currentCell = cellDict[$"Cell_{idx}_{wallSpaceidx}"];
-            currentCell.State(false, false, false, false, false);
-
-            yield return StartCoroutine(RecursivePathing(lowerX, idx, lowerY, upperY));
-            yield return StartCoroutine(RecursivePathing(idx, upperX, lowerY, upperY));
-        }
-
-        yieldBool = true;
-    }
-
-    IEnumerator Horizontal(int lowerX, int upperX, int lowerY, int upperY)
-    {
-        CellGrid currentCell;
-
-
-        if (upperY - lowerY - 3 <= 0)
-        {
-            yieldBool = false;
-            yield break;
-        }
-
-        int idx = Random.Range(0, upperY - lowerY - 3) + lowerY + 2;
-        int wallSpaceidx = Random.Range(0, upperX - lowerX - 1) + lowerX + 1;
-
-        for (int i = lowerX + 1; i < upperX; i++)
-        {
-            currentCell = cellDict[$"Cell_{i}_{idx}"];
-            currentCell.State(true, false, false, false, false);
-        }
-
-        currentCell = cellDict[$"Cell_{wallSpaceidx}_{idx}"];
-        currentCell.State(false, false, false, false, false);
-
-        yield return StartCoroutine(RecursivePathing(lowerX, upperX, lowerY, idx));
-        yield return StartCoroutine(RecursivePathing(lowerX, upperX, idx, upperY));
-
-        yieldBool = true;
-    }
-    
     public IEnumerator DFSPathFinding(string startCell, string endCell){
         List<string>    neighborhoodCells   = Neighborhood(startCell);
         List<string>    visited             = new List<string>();
@@ -388,12 +275,13 @@ public class GridManager : MonoBehaviour
                 if(currentCell.getStateWall()) {
                     walls.Add(currentCell.name);
                     Debug.Log($"WALLS: {currentCell.name}");
+                    
                 }
             }   
         }
 
         currentCell = cellDict[startCell];
-        currentCell.State(false,true,false, false, false);
+        currentCell.State(false,true,false);
         int count = 0;
         while (mazeEND)
         {
@@ -424,16 +312,16 @@ public class GridManager : MonoBehaviour
                 newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
                 //Añadimos la celda a las visitadas
                 visited.Add(newCell.name);
-                stack.Add(currentCell.name);
+                stack.Add(newCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
-                currentCell.State(false,true,false, false, false);
+                currentCell.State(false,true,false);
 
             } else{
                 Debug.Log($"NV: {currentCell.name}");
                 visited.Add(currentCell.name);
                 currentCell = cellDict[stack[stack.Count - 1]];
                 stack.RemoveAt(stack.Count -1);
-                currentCell.State(false,true,false, false, false);
+                currentCell.State(false,true,false);
             }
 
             //Condiciones de parada
@@ -454,8 +342,10 @@ public class GridManager : MonoBehaviour
         }
 
         foreach(string cell in stack) {
-            cellDict[cell].State(false,true,true, false, false);
+            cellDict[cell].State(false,true,true);
             yield return new WaitForSeconds(0.05f);
         }
+    
     }
+
 }
