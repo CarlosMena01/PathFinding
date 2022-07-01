@@ -16,8 +16,8 @@ public class GridManager : MonoBehaviour
 
     bool mazeEND = false;
 
-    private string startCell;
-    private string endCell;
+    private string startCell = "Cell_0_0";
+    private string endCell = "Cell_10_10";
 
     private void Start() {
         Generator();
@@ -48,7 +48,6 @@ public class GridManager : MonoBehaviour
         }   
 
         _cam.transform.position = new Vector3((float) _width/2 - 0.5f, (float) _height/2 - 0.5f, -100);
-
     }
 
     public Vector3 getDimensions(){
@@ -69,9 +68,21 @@ public class GridManager : MonoBehaviour
 
     public void setStart(string startName){
         this.startCell = startName;
+        Debug.Log($"Punto inicio es {startName}");
     }
 
     public void setEnd(string endName){
         this.endCell = endName;
+        Debug.Log($"Punto final es {endName}");
+    }
+
+    public string getStart(){
+        return this.startCell;
+        Debug.Log($"Punto inicial es {this.startCell}");
+    }
+
+    public string getEnd(){
+        return this.endCell;
+        Debug.Log($"Punto finalss es {this.endCell}");
     }
 }

@@ -6,7 +6,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] float duration;
     [SerializeField] float delay;
-    [SerializeField] AnimationCurve animation;
+    [SerializeField] AnimationCurve animationCurve;
 
     [SerializeField] RectTransform _target;
 
@@ -14,11 +14,18 @@ public class UIManager : MonoBehaviour
 
     public void FadeIn () {
         StopAllCoroutines();
-        StartCoroutine(FadeInCoroutine());
+        StartCoroutine(FadeInCoroutine(startPoint, endPoint));
+        
+    }
+    public void FadeOut () {
+        StopAllCoroutines();
+        StartCoroutine(FadeInCoroutine(endPoint, startPoint));
         
     }
 
-    IEnumerator FadeInCoroutine(){
+    IEnumerator FadeInCoroutine(Vector2 a, Vector2 b){
+        Vector2 startPoint = a;
+        Vector2 endPoint = b;
         float time = 0;
         while(time <= delay){
             time += Time.deltaTime;
@@ -29,7 +36,7 @@ public class UIManager : MonoBehaviour
         while(time <= duration){
             float percent = time/duration;
 
-            float curventPercent = animation.Evaluate(percent);
+            float curventPercent = animationCurve.Evaluate(percent);
 
             Vector2 currentPosition = Vector2.Lerp(startPoint, endPoint, curventPercent);
 
@@ -39,9 +46,5 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         _target.anchoredPosition = endPoint;
-    }
-
-    IEnumerator FadeOutCoroutine(){
-        yield return null;
     }
 }

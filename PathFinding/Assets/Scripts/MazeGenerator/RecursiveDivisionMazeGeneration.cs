@@ -15,6 +15,8 @@ public class RecursiveDivisionMazeGeneration : MonoBehaviour
         _height = (int) gridManager.getDimensions().x;
         _width = (int) gridManager.getDimensions().y; 
         cellDict = gridManager.getCellsDict();
+
+        StartCoroutine(RecursiveDivision());
     }
 
     bool yieldBool;

@@ -13,11 +13,19 @@ public class BFSPathFinding : MonoBehaviour
     private float _height;
     private float _width;
 
+    string endCell;
+    string startCell;
+
     public  void Start() {
         mazeEND = gridManager.isMazeEnd();
         _height = gridManager.getDimensions().x;
         _width = gridManager.getDimensions().y; 
         cellDict = gridManager.getCellsDict();
+
+        startCell = gridManager.getStart();
+        endCell   = gridManager.getEnd();
+
+        StartCoroutine(BFSPathfinding(startCell, endCell));
     }
 
     IEnumerator BFSPathfinding(string start, string end){
@@ -34,7 +42,7 @@ public class BFSPathFinding : MonoBehaviour
         stack.Add(start);
         
         while(!mazeEND){
-
+            mazeEND = gridManager.isMazeEnd();
             yield return new WaitForSeconds(0.01f);
         }; //Esperamos a que se construya el laberinto
 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BinaryTreeMazeGenerator : MonoBehaviour
 {
-    public class BinaryTree : MonoBehaviour
-{
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
     
     [SerializeField] GridManager gridManager;
@@ -18,6 +16,7 @@ public class BinaryTreeMazeGenerator : MonoBehaviour
         _height = gridManager.getDimensions().x;
         cellDict = gridManager.getCellsDict();
 
+        StartCoroutine(BinaryTreeMaze());
     }
 
 
@@ -53,4 +52,3 @@ public class BinaryTreeMazeGenerator : MonoBehaviour
             gridManager.setMazeState(true);
     }
 }   
-}

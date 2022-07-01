@@ -13,12 +13,21 @@ public class DFSPathFinding : MonoBehaviour
     private float _height;
     private float _width;
 
+    string endCell;
+    string startCell;
+
     public  void Start() {
         mazeEND = gridManager.isMazeEnd();
         _height = gridManager.getDimensions().x;
         _width = gridManager.getDimensions().y; 
         cellDict = gridManager.getCellsDict();
+
+        startCell = gridManager.getStart();
+        endCell   = gridManager.getEnd();
+
+        StartCoroutine(DFSPathfinding(startCell, endCell));
     }
+
     IEnumerator DFSPathfinding(string startCell, string endCell){
         List<string>    neighborhoodCells   = Neighborhood(startCell);
         List<string>    visited             = new List<string>();
@@ -35,7 +44,7 @@ public class DFSPathFinding : MonoBehaviour
         
         
         while(!mazeEND){
-
+            mazeEND = gridManager.isMazeEnd();
             yield return new WaitForSeconds(0.05f);
         }; //Esperamos a que se construya el laberinto
 

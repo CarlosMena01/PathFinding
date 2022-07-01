@@ -15,6 +15,8 @@ public class DFSMazeGenerator : MonoBehaviour
         _height = gridManager.getDimensions().x;
         _width = gridManager.getDimensions().y; 
         cellDict = gridManager.getCellsDict();
+
+        StartCoroutine(MazeDFS("Cell_0_0"));
     }
 
 
