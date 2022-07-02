@@ -206,7 +206,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 357.5, y: -54.78003}
+  m_AnchoredPosition: {x: 357.5, y: -20.363}
   m_SizeDelta: {x: 99, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &61222157
@@ -248,8 +248,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _target: {fileID: 61222156}
-  startPoint: {x: 0, y: 269.64}
-  endPoint: {x: 0, y: 235.22}
+  startPoint: {x: 357.5, y: -20.363}
+  endPoint: {x: 357.5, y: -50.999}
 --- !u!114 &61222158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2626,7 +2626,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100.079956, y: 7.6400146}
+  m_AnchoredPosition: {x: 125.19, y: -70.997}
   m_SizeDelta: {x: 180.59119, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1599415534
@@ -2668,8 +2668,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _target: {fileID: 1599415533}
-  startPoint: {x: -257.42, y: 297.64}
-  endPoint: {x: -257.42, y: 219}
+  startPoint: {x: 125.19, y: 0}
+  endPoint: {x: 125.19, y: -70.997}
 --- !u!114 &1599415535
 MonoBehaviour:
   m_ObjectHideFlags: 0
