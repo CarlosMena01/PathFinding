@@ -11,7 +11,7 @@ public class DFSMazeGenerator : MonoBehaviour
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
     
 
-    public  void Start() {
+    public  void StartCreation() {
         _height = gridManager.getDimensions().x;
         _width = gridManager.getDimensions().y; 
         cellDict = gridManager.getCellsDict();

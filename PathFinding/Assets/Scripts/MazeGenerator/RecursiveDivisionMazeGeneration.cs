@@ -11,7 +11,7 @@ public class RecursiveDivisionMazeGeneration : MonoBehaviour
     private int _height;
     private int _width;
 
-    public  void Start() {
+    public  void StartCreation() {
         _height = (int) gridManager.getDimensions().x;
         _width = (int) gridManager.getDimensions().y; 
         cellDict = gridManager.getCellsDict();

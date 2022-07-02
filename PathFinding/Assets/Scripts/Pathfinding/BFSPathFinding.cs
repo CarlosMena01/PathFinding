@@ -16,7 +16,7 @@ public class BFSPathFinding : MonoBehaviour
     string endCell;
     string startCell;
 
-    public  void Start() {
+    public  void StartSolve() {
         mazeEND = gridManager.isMazeEnd();
         _height = gridManager.getDimensions().x;
         _width = gridManager.getDimensions().y; 

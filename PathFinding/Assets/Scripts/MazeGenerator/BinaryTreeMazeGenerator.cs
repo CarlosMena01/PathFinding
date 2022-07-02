@@ -11,7 +11,7 @@ public class BinaryTreeMazeGenerator : MonoBehaviour
     private float _height;
     private float _width; 
 
-    public  void Start() {
+    public  void StartCreation() {
         _width = gridManager.getDimensions().y; 
         _height = gridManager.getDimensions().x;
         cellDict = gridManager.getCellsDict();

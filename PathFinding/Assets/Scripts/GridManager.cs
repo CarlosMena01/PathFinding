@@ -23,8 +23,20 @@ public class GridManager : MonoBehaviour
     private string startCell = "Cell_1_1";
     private string endCell = "Cell_31_15";
 
+    private Vector3 startPosition, endPosition; 
+
     private void Start() {
         Generator();
+    }
+
+    private void Update() {
+        startPosition = cellDict[startCell].getPosition();
+        endPosition = cellDict[endCell].getPosition();
+
+        _cellStart.transform.position = startPosition;
+        _cellEnd.transform.position = endPosition;
+        
+        
     }
 
     private void Generator(){
