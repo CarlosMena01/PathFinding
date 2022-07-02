@@ -21,6 +21,13 @@ public class BinaryTreeMazeGenerator : MonoBehaviour
 
 
     IEnumerator BinaryTreeMaze() {
+        //Limpiamos el tablero
+        for(int x = 0; x < _width; x++) {
+            for(int y = 0; y < _height; y++) {
+                var currentCell = cellDict[$"Cell_{x}_{y}"];
+                currentCell.State(false, false, false);
+            }   
+        }
 
          for (int i = 0; i < _width; i += 2 )
             {
