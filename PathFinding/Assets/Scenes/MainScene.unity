@@ -2974,8 +2974,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c10e62e62fae125c29596bcad71b7bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 32
-  _height: 16
+  _width: 38
+  _height: 20
   _cellPrefab: {fileID: 359865305}
   _outskirtPrefab: {fileID: 595703338}
   _cam: {fileID: 1430981122}
