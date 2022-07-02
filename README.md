@@ -10,9 +10,9 @@ El proyecto que trabajamos durante el curso consiste en la creacion de laberinto
 
 Para nuestro caso utilizamos los siguientes algoritmos para la creación de los laberintos:
 * Búsqueda en profundidad (Depth First Search)
-  ![](https://upload.wikimedia.org/wikipedia/commons/7/7f/Depth-First-Search.gif?20090326120256 "Título opcional del enlace")
+![](https://upload.wikimedia.org/wikipedia/commons/7/7f/Depth-First-Search.gif?20090326120256 "Título opcional del enlace")
 * Disivión recursiva (Recursive division)
-  ![](https://www.boristhebrave.com/wp-content/uploads/2021/08/subdivision_maze.gif)
+![](https://www.boristhebrave.com/wp-content/uploads/2021/08/subdivision_maze.gif)
 * Árboles Binarios (Binary Tree)
 ![](https://thumbs.gfycat.com/EarnestPartialKob.webp)
   
@@ -28,8 +28,8 @@ Para este proyecto se utilizó la versión de Unity **2021.2.18f1**
 
 1. Elegir un algoritmo de creación de laberintos
 2. Seleccionar el punto de inicio del camino y el punto de llegada:
-   * El punto de inicio se debe marcar con la combinación de la tecla Control + Click izquierdo.
    * El punto de inicio se debe marcar con la combinación de la tecla Alt + Click izquierdo
+   * El punto de llegada se debe marcar con la combinación de la tecla Control + Click izquierdo.
 3. Seleccionar el algoritmo de búsqueda del camino entre los dos puntos y ejecutar
 
 ### Paquetes
