@@ -20,8 +20,8 @@ public class GridManager : MonoBehaviour
 
     bool mazeEND = false;
 
-    private string startCell = "Cell_0_0";
-    private string endCell = "Cell_10_10";
+    private string startCell = "Cell_1_1";
+    private string endCell = "Cell_31_15";
 
     private void Start() {
         Generator();

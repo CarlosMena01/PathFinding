@@ -31,7 +31,7 @@ public class BFSPathFinding : MonoBehaviour
     IEnumerator BFSPathfinding(string start, string end){
         List<string> neighborhoodCells = Neighborhood(start);
         List<string> visited = new List<string>();
-        List<string> stack = new List<string>();
+        LinkedList<string> queue = new LinkedList<string>();
         List<string> walls = new List<string>();
 
 
@@ -39,7 +39,7 @@ public class BFSPathFinding : MonoBehaviour
         CellGrid newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
 
         visited.Add(start);
-        stack.Add(start);
+        queue.AddLast(start);
         
         while(!mazeEND){
             mazeEND = gridManager.isMazeEnd();
@@ -88,14 +88,14 @@ public class BFSPathFinding : MonoBehaviour
                 newCell = cellDict[neighborhoodCells[Random.Range(0, neighborhoodCells.Count)]]; //Seleccionamos un vecino al azar
                 //Añadimos la celda a las visitadas
                 visited.Add(newCell.name);
-                stack.Add(currentCell.name);
+                queue.AddFirst(currentCell.name);
                 currentCell = newCell; //Nos movemos a la nueva celda
                 currentCell.State(false,true,false);
 
             } else{
                 visited.Add(currentCell.name);
-                currentCell = cellDict[stack[stack.Count - 1]];
-                stack.RemoveAt(stack.Count -1);
+                currentCell = cellDict[queue.First.Value];
+                queue.RemoveFirst();
                 currentCell.State(false,true,false);
             }
 
@@ -104,17 +104,17 @@ public class BFSPathFinding : MonoBehaviour
                 break;
             }
             if(currentCell.name == end){
-                stack.Add(currentCell.name);
+                queue.AddLast(currentCell.name);
                 break;
             }
-            if(stack.Count < 1){
+            if(queue.Count < 1){
                 break;
             }
             count++;
             yield return new WaitForSeconds(0.05f);
         }
 
-        foreach(string cell in stack) {
+        foreach(string cell in queue) {
             cellDict[cell].State(false,true,true);
             yield return new WaitForSeconds(0.05f);
         }
