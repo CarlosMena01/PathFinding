@@ -33,6 +33,17 @@ public class GridManager : MonoBehaviour
         startPosition = cellDict[startCell].getPosition();
         endPosition = cellDict[endCell].getPosition();
 
+        if (cellDict[endCell].getStateWall())
+        {
+            List<string> keyList = new List<string>(cellDict.Keys);
+            this.endCell = keyList[Random.Range(0, keyList.Count)];
+        }
+        if (cellDict[startCell].getStateWall())
+        {
+            List<string> keyList = new List<string>(cellDict.Keys);
+            this.startCell = keyList[Random.Range(0, keyList.Count)];
+        }
+
         _cellStart.transform.position = startPosition;
         _cellEnd.transform.position = endPosition;
         
