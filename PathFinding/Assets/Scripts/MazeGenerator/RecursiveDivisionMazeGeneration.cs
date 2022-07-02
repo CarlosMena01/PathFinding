@@ -16,6 +16,14 @@ public class RecursiveDivisionMazeGeneration : MonoBehaviour
         _width = (int) gridManager.getDimensions().y; 
         cellDict = gridManager.getCellsDict();
 
+        //Limpiamos el tablero
+        for(int x = 0; x < _width; x++) {
+            for(int y = 0; y < _height; y++) {
+                var currentCell = cellDict[$"Cell_{x}_{y}"];
+                currentCell.State(false, false, false);
+            }   
+        }
+
         StartCoroutine(RecursiveDivision());
     }
 
