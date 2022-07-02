@@ -10,8 +10,12 @@ El proyecto que trabajamos durante el curso consiste en la creacion de laberinto
 
 Para nuestro caso utilizamos los siguientes algoritmos para la creación de los laberintos:
 * Búsqueda en profundidad (Depth First Search)
+  ![](https://upload.wikimedia.org/wikipedia/commons/7/7f/Depth-First-Search.gif?20090326120256 "Título opcional del enlace")
 * Disivión recursiva (Recursive division)
+  ![](https://www.boristhebrave.com/wp-content/uploads/2021/08/subdivision_maze.gif)
 * Árboles Binarios (Binary Tree)
+![](https://thumbs.gfycat.com/EarnestPartialKob.webp)
+  
   
 Y para la búsqueda del camino entre dos puntos dados por el jugador contamos con:
 * Búsqueda en profundidad (Depth First Search)

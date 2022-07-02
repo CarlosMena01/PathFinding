@@ -12,6 +12,10 @@ public class GridManager : MonoBehaviour
 
     [SerializeField]  private Transform _cam;
 
+    [SerializeField] private GameObject _cellStart;
+
+    [SerializeField] private GameObject _cellEnd;
+
     public Dictionary<string, CellGrid> cellDict = new Dictionary<string, CellGrid>();
 
     bool mazeEND = false;
@@ -22,7 +26,7 @@ public class GridManager : MonoBehaviour
     private void Start() {
         Generator();
     }
-    
+
     private void Generator(){
         //Creamos toda la cuadricula
         for(int x = 0; x < _width; x++) {
