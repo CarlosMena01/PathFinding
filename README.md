@@ -27,3 +27,6 @@ Para este proyecto se utilizó la versión de Unity **2021.2.18f1**
    * El punto de inicio se debe marcar con la combinación de la tecla Control + Click izquierdo.
    * El punto de inicio se debe marcar con la combinación de la tecla Alt + Click izquierdo
 3. Seleccionar el algoritmo de búsqueda del camino entre los dos puntos y ejecutar
+
+### Paquetes
+* TextMesh Pro
