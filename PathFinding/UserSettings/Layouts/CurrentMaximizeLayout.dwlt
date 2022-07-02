@@ -25,7 +25,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 13934
+  controlID: 18274
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -392,9 +392,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0, y: 0, z: 0}
+    m_Target: {x: 85.63661, y: 49.71934, z: 900}
     speed: 2
-    m_Value: {x: 0, y: 0, z: 0}
+    m_Value: {x: 85.63661, y: 49.71934, z: 900}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -445,9 +445,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 3.6217675
+    m_Target: 159.57059
     speed: 2
-    m_Value: 3.6217675
+    m_Value: 159.57059
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -496,7 +496,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 13857
+  controlID: 18297
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -554,9 +554,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 905f0000
-      m_LastClickedID: 24464
-      m_ExpandedIDs: 56fdfeff2efbffff4a5f0000605f00007e5f0000
+      m_SelectedIDs: 3001fcff
+      m_LastClickedID: -261840
+      m_ExpandedIDs: f4fcfbffbcfdfbfff205fcff3806fcff56fdfeff2efbffff4a5f0000605f00007e5f0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -715,9 +715,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 905f0000
-    m_LastClickedInstanceID: 24464
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 3001fcff
+    m_LastClickedInstanceID: -261840
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -807,7 +807,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 481
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
