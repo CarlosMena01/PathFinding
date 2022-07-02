@@ -23,7 +23,7 @@ Y para la búsqueda del camino entre dos puntos dados por el jugador contamos co
 
 ### Presentación
 
-![](https://drive.google.com/file/d/1Gmu-Asn_lOigpQeRWDJ9tB_2elGjAx8G/view?usp=sharing)
+![](https://giphy.com/gifs/RiWOJJgEpgoOdiN8ZG)
 
 ### Versión de Unity
 Para este proyecto se utilizó la versión de Unity **2021.2.18f1**
